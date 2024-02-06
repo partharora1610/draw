@@ -3,12 +3,14 @@ import { Input } from "@/components/ui/input";
 // import { LucidePenTool } from "lucide-react";
 import { useRef, useState } from "react";
 import CanvasBoard from "./CanvasBoard";
-// import {
-//   Tooltip,
-//   TooltipContent,
-//   TooltipProvider,
-//   TooltipTrigger,
-// } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Button } from "@/components/ui/button";
+import { LucidePenTool } from "lucide-react";
 
 const INITIALCOLORS = ["#000000", "#000000"];
 
@@ -17,7 +19,7 @@ const INITIALCOLORS = ["#000000", "#000000"];
 
 export default function Component() {
   const [preferredColor, setPrefferedColors] = useState([]);
-  const [tool, setTool] = useState("pencil");
+  const [tool, setTool] = useState("");
   const [color, setColor] = useState("black");
   const [elements, setElements] = useState([]);
 
@@ -29,13 +31,12 @@ export default function Component() {
       <div className="">
         <div className="flex items-center justify-between p-4 border-b-1 border-gray-700 bg-gray-200">
           <div className="flex items-center gap-4">
-            {/* <TooltipProvider>
+            <TooltipProvider>
               <Tooltip>
-                <TooltipTrigger>
-                  <Button size="icon" variant="outline" id="pencil">
+                <TooltipTrigger className="bg-white p-2">
+                  <div onClick={() => setTool("pencil")}>
                     <PencilIcon className="h-6 w-6" />
-                    <span className="sr-only">Pencil</span>
-                  </Button>
+                  </div>
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>Pencil</p>
@@ -45,11 +46,10 @@ export default function Component() {
 
             <TooltipProvider>
               <Tooltip>
-                <TooltipTrigger>
-                  <Button size="icon" variant="outline" id="line">
+                <TooltipTrigger className="bg-white p-2">
+                  <div onClick={() => setTool("line")}>
                     <LucidePenTool />
-                    <span className="sr-only">Line</span>
-                  </Button>
+                  </div>
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>Line</p>
@@ -59,11 +59,10 @@ export default function Component() {
 
             <TooltipProvider>
               <Tooltip>
-                <TooltipTrigger>
-                  <Button size="icon" variant="outline" id="shapes">
+                <TooltipTrigger className="bg-white p-2">
+                  <div onClick={() => setTool("rect")}>
                     <ShapesIcon className="h-6 w-6" />
-                    <span className="sr-only">Shapes</span>
-                  </Button>
+                  </div>
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>Shapes</p>
@@ -73,17 +72,14 @@ export default function Component() {
 
             <TooltipProvider>
               <Tooltip>
-                <TooltipTrigger>
-                  <Button size="icon" variant="outline" id="eraser">
-                    <EraserIcon className="h-6 w-6" />
-                    <span className="sr-only">Eraser</span>
-                  </Button>
+                <TooltipTrigger className="bg-white p-2">
+                  <EraserIcon className="h-6 w-6" />
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>Shapes</p>
                 </TooltipContent>
               </Tooltip>
-            </TooltipProvider> */}
+            </TooltipProvider>
           </div>
 
           <div className="flex gap-2">
@@ -100,7 +96,8 @@ export default function Component() {
         <div className="">
           <CanvasBoard
             canvasRef={canvasRef}
-            ctxRef={ctxRef}
+            tool={tool}
+            ctx={ctxRef}
             elements={elements}
             setElements={setElements}
           />
