@@ -19,16 +19,29 @@ app.get("/", (req, res) => {
   res.send("Hello, Express!");
 });
 
+let roomIdGlobal: any, imgUrlGlobal: any;
+
 io.on("connection", (socket: Socket) => {
   socket.on("join-room", (data) => {
     console.log("data", data);
     const { roomId, name, host, userId, presenter } = data;
+    roomIdGlobal = roomId;
 
     socket.join(roomId);
 
     socket.emit("userJoined", {
       success: true,
     });
+    socket.broadcast.to(roomId).emit("canvasData", {
+      imgUrl: imgUrlGlobal,
+    });
+  });
+
+  socket.on("canvas-data", (data) => {
+    imgUrlGlobal = data;
+    socket.broadcast
+      .to(roomIdGlobal)
+      .emit("canvasDataResponse", { imgUrl: data });
   });
 });
 

@@ -11,7 +11,13 @@ import CanvasBoard from "./CanvasBoard";
 
 const INITIALCOLORS = ["#000000", "#000000"];
 
-export default function Component({ roomData }: { roomData: any }) {
+export default function Component({
+  roomData,
+  user,
+}: {
+  roomData: any;
+  user: any;
+}) {
   const [tool, setTool] = useState("");
   const [color, setColor] = useState("black");
   const [elements, setElements] = useState([]);
@@ -22,70 +28,72 @@ export default function Component({ roomData }: { roomData: any }) {
   return (
     <>
       <div className="">
-        <div className="flex items-center justify-between p-4 border-b-1 border-gray-700 bg-gray-200">
-          <div className="flex items-center gap-4">
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger className="bg-white p-2">
-                  <div onClick={() => setTool("pencil")}>
-                    <PencilIcon className="h-6 w-6" />
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Pencil</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+        {user?.presenter && (
+          <div className="flex items-center justify-between p-4 border-b-1 border-gray-700 bg-gray-200">
+            <div className="flex items-center gap-4">
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger className="bg-white p-2">
+                    <div onClick={() => setTool("pencil")}>
+                      <PencilIcon className="h-6 w-6" />
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Pencil</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
 
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger className="bg-white p-2">
-                  <div onClick={() => setTool("line")}>
-                    <LucidePenTool />
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Line</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger className="bg-white p-2">
+                    <div onClick={() => setTool("line")}>
+                      <LucidePenTool />
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Line</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
 
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger className="bg-white p-2">
-                  <div onClick={() => setTool("rect")}>
-                    <ShapesIcon className="h-6 w-6" />
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Shapes</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger className="bg-white p-2">
+                    <div onClick={() => setTool("rect")}>
+                      <ShapesIcon className="h-6 w-6" />
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Shapes</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
 
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger className="bg-white p-2">
-                  <EraserIcon className="h-6 w-6" />
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Shapes</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </div>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger className="bg-white p-2">
+                    <EraserIcon className="h-6 w-6" />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Shapes</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
 
-          <div className="flex gap-2">
-            {INITIALCOLORS.map((color, i) => {
-              const newClass = `w-[32px] h-[32px] bg-[${color}] cursor-pointer`;
-              return <div key={i} className={newClass} id="#000"></div>;
-            })}
+            <div className="flex gap-2">
+              {INITIALCOLORS.map((color, i) => {
+                const newClass = `w-[32px] h-[32px] bg-[${color}] cursor-pointer`;
+                return <div key={i} className={newClass} id="#000"></div>;
+              })}
 
-            <div className="w-[75px]">
-              <Input type="color" />
+              <div className="w-[75px]">
+                <Input type="color" />
+              </div>
             </div>
           </div>
-        </div>
+        )}
         <div className="">
           <CanvasBoard
             canvasRef={canvasRef}
@@ -94,6 +102,7 @@ export default function Component({ roomData }: { roomData: any }) {
             elements={elements}
             setElements={setElements}
             color={color}
+            user={user}
           />
         </div>
       </div>

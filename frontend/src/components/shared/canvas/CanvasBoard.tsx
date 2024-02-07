@@ -1,3 +1,4 @@
+import { socket } from "@/App";
 import { useEffect, useLayoutEffect, useState } from "react";
 import rough from "roughjs";
 
@@ -9,7 +10,32 @@ const CanvasBoard = ({
   setElements,
   elements,
   tool,
+  user,
 }: any) => {
+  // if the user is not the presenter, then show the image
+  const [img, setImg] = useState("");
+  console.log(user);
+
+  useEffect(() => {
+    socket.on("canvasDataResponse", (data: any) => {
+      console.log(data);
+      setImg(data.imgUrl);
+    });
+  }, []);
+
+  if (!user?.presenter) {
+    return (
+      <div
+        className="col-md-8 overflow-hidden border border-dark px-0 mx-auto mt-3"
+        style={{ height: "500px" }}
+      >
+        <img src={img} alt="" className="w-100 h-100" />
+        {JSON.stringify(elements)}
+        <p>This is coming</p>
+      </div>
+    );
+  }
+
   const [isDrawing, setIsDrawing] = useState(false);
 
   useEffect(() => {
@@ -92,6 +118,9 @@ const CanvasBoard = ({
           strokeWidth: 5,
         });
       }
+
+      const canvasImage = canvasRef.current.toDataURL();
+      socket.emit("canvas-data", canvasImage);
     });
   }, [elements]);
 

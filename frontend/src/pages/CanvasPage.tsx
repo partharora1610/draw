@@ -12,7 +12,7 @@ const CanvasPage = ({ user }: any) => {
       <p>Username :{user?.name}</p>
       <p>RoomNumber:{user?.roomId}</p>
 
-      <Canvas roomData={"roomData"} />
+      <Canvas roomData={"roomData"} user={user} />
     </div>
   );
 };
