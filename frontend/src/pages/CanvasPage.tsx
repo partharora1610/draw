@@ -1,14 +1,18 @@
-import Canvas from "@/components/shared/canvas/Canvas";
 import { useParams } from "react-router-dom";
 
-const CanvasPage = () => {
+import Canvas from "@/components/shared/canvas/Canvas";
+
+const CanvasPage = ({ user }: any) => {
   const { id } = useParams();
 
   return (
     <div className="border-1 border-black w-full">
       <p>ROOMID:{id}</p>
 
-      <Canvas />
+      <p>Username :{user?.name}</p>
+      <p>RoomNumber:{user?.roomId}</p>
+
+      <Canvas roomData={"roomData"} />
     </div>
   );
 };

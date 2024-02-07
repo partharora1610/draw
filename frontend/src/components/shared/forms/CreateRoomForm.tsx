@@ -1,19 +1,15 @@
 "use client";
 
-// import { z } from "zod";
-
 import { Button } from "@/components/ui/button";
-
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
-import { generateRoomID } from "@/lib/generateRoomId";
-import { useSocket } from "@/context/socketContext";
-import { useNavigate } from "react-router-dom";
 
-export function CreateRoomForm() {
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { generateRoomID } from "@/lib/generateRoomId";
+
+export function CreateRoomForm({ socket, setUser, user }: any) {
   const navigate = useNavigate();
-  const { socket } = useSocket();
 
   const [roomId, setRoomId] = useState("");
   const [username, setUsername] = useState("");
@@ -21,11 +17,7 @@ export function CreateRoomForm() {
   const onSubmit = (e: any) => {
     e.preventDefault();
 
-    if (!socket) {
-      return;
-    }
-
-    const roomData = {
+    const data = {
       roomId,
       name: username,
       host: true,
@@ -33,10 +25,10 @@ export function CreateRoomForm() {
       presenter: true,
     };
 
-    socket.emit("join-room", roomData);
+    setUser(data);
+    socket.emit("join-room", data);
+
     navigate(`/room/${roomId}`);
-    // reset the form
-    // redirect the user
 
     setUsername("");
     setRoomId("");

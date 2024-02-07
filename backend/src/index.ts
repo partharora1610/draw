@@ -21,7 +21,14 @@ app.get("/", (req, res) => {
 
 io.on("connection", (socket: Socket) => {
   socket.on("join-room", (data) => {
-    socket.emit("userJoined", data);
+    console.log("data", data);
+    const { roomId, name, host, userId, presenter } = data;
+
+    socket.join(roomId);
+
+    socket.emit("userJoined", {
+      success: true,
+    });
   });
 });
 

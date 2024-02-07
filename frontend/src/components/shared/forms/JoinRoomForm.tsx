@@ -15,13 +15,16 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useNavigate } from "react-router-dom";
 
 const formSchema = z.object({
   roomID: z.string(),
   username: z.string(),
 });
 
-export function JoinRoomForm() {
+export function JoinRoomForm({ socket, setUser }: any) {
+  const navigate = useNavigate();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -32,6 +35,22 @@ export function JoinRoomForm() {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
+
+    const data = {
+      roomId: values.roomID,
+      name: values.username,
+      host: false,
+      userId: "123", // fake ID
+      presenter: false,
+    };
+
+    setUser(data);
+
+    socket.emit("join-room", data);
+
+    if (data.roomId) {
+      navigate(`/room/${data.roomId}`);
+    }
   }
 
   return (
@@ -47,9 +66,7 @@ export function JoinRoomForm() {
                 <FormControl>
                   <Input placeholder="shadcn" {...field} />
                 </FormControl>
-                <FormDescription>
-                  {/* This is your public display name. */}
-                </FormDescription>
+                <FormDescription></FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -63,9 +80,7 @@ export function JoinRoomForm() {
                 <FormControl>
                   <Input placeholder="shadcn" {...field} />
                 </FormControl>
-                <FormDescription>
-                  {/* This is your public display name. */}
-                </FormDescription>
+                <FormDescription></FormDescription>
                 <FormMessage />
               </FormItem>
             )}

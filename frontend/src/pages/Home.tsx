@@ -1,7 +1,7 @@
 import { CreateRoomForm } from "@/components/shared/forms/CreateRoomForm";
 import { JoinRoomForm } from "@/components/shared/forms/JoinRoomForm";
 
-export default function Home() {
+export default function Home({ socket, setUser, user }: any) {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
       <div className="w-full max-w-md p-6 m-3 bg-white rounded-lg shadow-md dark:bg-gray-800">
@@ -9,7 +9,7 @@ export default function Home() {
           Join Room
         </h2>
         <div className="mt-6">
-          <JoinRoomForm />
+          <JoinRoomForm socket={socket} setUser={setUser} />
         </div>
       </div>
       <div className="w-full max-w-md p-6 m-3 bg-white rounded-lg shadow-md dark:bg-gray-800">
@@ -17,7 +17,7 @@ export default function Home() {
           Create Room
         </h2>
         <div className="mt-6">
-          <CreateRoomForm />
+          <CreateRoomForm socket={socket} setUser={setUser} user={user} />
         </div>
       </div>
     </div>

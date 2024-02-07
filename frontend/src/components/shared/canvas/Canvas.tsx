@@ -7,22 +7,17 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { LucidePenTool } from "lucide-react";
-
 import CanvasBoard from "./CanvasBoard";
 
 const INITIALCOLORS = ["#000000", "#000000"];
 
-export default function Component() {
+export default function Component({ roomData }: { roomData: any }) {
   const [tool, setTool] = useState("");
   const [color, setColor] = useState("black");
   const [elements, setElements] = useState([]);
 
   const canvasRef = useRef<string | null>(null);
   const ctxRef = useRef<string | null>(null);
-
-  const changeColorHandler = (str: string) => {
-    setColor(str);
-  };
 
   return (
     <>

@@ -1,45 +1,49 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
-import io, { Socket } from "socket.io-client";
+// import React, { createContext, useContext, useEffect, useState } from "react";
+// import io, { Socket } from "socket.io-client";
 
-interface SocketContextType {
-  socket: Socket | null;
-}
+// interface SocketContextType {
+//   socket: Socket | null;
+//   roomData: any;
+// }
 
-const SocketContext = createContext<SocketContextType>({
-  socket: null,
-});
+// const SocketContext = createContext<SocketContextType>({
+//   socket: null,
+//   roomData: null,
+// });
 
-export const useSocket = () => {
-  return useContext(SocketContext);
-};
+// export const useSocket = () => {
+//   return useContext(SocketContext);
+// };
 
-interface SocketProviderProps {
-  url: string;
-  children: React.ReactNode;
-}
+// interface SocketProviderProps {
+//   url: string;
+//   children: React.ReactNode;
+// }
 
-export const SocketProvider: React.FC<SocketProviderProps> = ({
-  url,
-  children,
-}) => {
-  const [socket, setSocket] = useState<Socket | null>(null);
+// export const SocketProvider: React.FC<SocketProviderProps> = ({
+//   url,
+//   children,
+// }) => {
+//   const [roomData, setRoomData] = useState<any>(null);
+//   const [socket, setSocket] = useState<Socket | null>(null);
 
-  useEffect(() => {
-    const socketInstance = io(url);
-    setSocket(socketInstance);
+//   useEffect(() => {
+//     const socketInstance = io(url);
+//     setSocket(socketInstance);
 
-    socketInstance.on("userJoined", (data: any) => {
-      console.log("from the server to the cli4nt", data);
-    });
+//     socketInstance.on("userJoined", (data: any) => {
+//       console.log("from the server to the cli4nt", data);
+//       setRoomData(data);
+//     });
 
-    return () => {
-      socketInstance.disconnect();
-    };
-  }, [url]);
+//     return () => {
+//       socketInstance.disconnect();
+//     };
+//   }, [url]);
 
-  return (
-    <SocketContext.Provider value={{ socket }}>
-      {children}
-    </SocketContext.Provider>
-  );
-};
+//   return (
+//     <SocketContext.Provider value={{ socket, roomData }}>
+//       {children}
+//     </SocketContext.Provider>
+//   );
+// };
