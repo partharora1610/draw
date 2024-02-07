@@ -1,30 +1,28 @@
-// import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-// import { LucidePenTool } from "lucide-react";
 import { useRef, useState } from "react";
-import CanvasBoard from "./CanvasBoard";
+import { Input } from "@/components/ui/input";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Button } from "@/components/ui/button";
 import { LucidePenTool } from "lucide-react";
+
+import CanvasBoard from "./CanvasBoard";
 
 const INITIALCOLORS = ["#000000", "#000000"];
 
-// This is the tailwind error need to be aware of this error
-//bg-[#000000]
-
 export default function Component() {
-  const [preferredColor, setPrefferedColors] = useState([]);
   const [tool, setTool] = useState("");
   const [color, setColor] = useState("black");
   const [elements, setElements] = useState([]);
 
   const canvasRef = useRef<string | null>(null);
   const ctxRef = useRef<string | null>(null);
+
+  const changeColorHandler = (str: string) => {
+    setColor(str);
+  };
 
   return (
     <>
@@ -100,6 +98,7 @@ export default function Component() {
             ctx={ctxRef}
             elements={elements}
             setElements={setElements}
+            color={color}
           />
         </div>
       </div>

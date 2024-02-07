@@ -1,19 +1,27 @@
 import express from "express";
 import http from "http";
 import { Server, Socket } from "socket.io";
+import cors from "cors";
 
 const app = express();
+app.use(cors());
+
 const server = http.createServer(app);
-const io = new Server(server);
+
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+  },
+});
 
 app.get("/", (req, res) => {
   res.send("Hello, Express!");
 });
 
 io.on("connection", (socket: Socket) => {
-  console.log("A user connected");
-  socket.on("disconnect", () => {
-    console.log("User disconnected");
+  socket.on("join-room", (data) => {
+    socket.emit("userJoined", data);
   });
 });
 

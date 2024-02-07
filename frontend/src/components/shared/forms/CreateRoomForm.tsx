@@ -1,40 +1,60 @@
 "use client";
 
-import { z } from "zod";
+// import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
-
-// use this to validate the form inputs
-const formSchema = z.object({
-  roomID: z.string(),
-  username: z.string(),
-});
+import { generateRoomID } from "@/lib/generateRoomId";
+import { useSocket } from "@/context/socketContext";
+import { useNavigate } from "react-router-dom";
 
 export function CreateRoomForm() {
+  const navigate = useNavigate();
+  const { socket } = useSocket();
+
   const [roomId, setRoomId] = useState("");
   const [username, setUsername] = useState("");
 
-  function onSubmit(e: any) {
+  const onSubmit = (e: any) => {
     e.preventDefault();
 
-    console.log({
+    if (!socket) {
+      return;
+    }
+
+    const roomData = {
       roomId,
-      username,
-    });
+      name: username,
+      host: true,
+      userId: "123", // fake ID
+      presenter: true,
+    };
+
+    socket.emit("join-room", roomData);
+    navigate(`/room/${roomId}`);
+    // reset the form
+    // redirect the user
 
     setUsername("");
     setRoomId("");
-  }
-
-  const linkGenerateHandler = () => {
-    // const randomRoomLink =
   };
 
-  const linkCopyHandler = () => {};
+  const linkGenerateHandler = (e: any) => {
+    e.preventDefault();
+    const randomRoomLink = generateRoomID();
+    setRoomId(randomRoomLink);
+  };
+
+  const linkCopyHandler = async (e: any) => {
+    e.preventDefault();
+    if (!roomId) {
+      return;
+    }
+    await navigator.clipboard.writeText(roomId);
+  };
 
   return (
     <div>
